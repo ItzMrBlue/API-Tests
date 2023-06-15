@@ -1,0 +1,46 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata: 
+  name: lorenzo-api
+  spec: 
+    repliacas:
+    selector: 
+      matchLabels:
+        app: lorenzo-api
+    template:
+    metadata:
+      labels:
+        app: lorenzo-api
+    spec: 
+      containers:
+        - name: lorenzo-api
+        image: us-docker.pkg.dev/unstable-unicorns-389016/lorenzo-api/api-tests
+        ports:
+          - container: 3000
+        resources:
+          limits:
+            cpu: ".25"
+            memory: "500Mi"
+          requests:
+            cpu: ".25"
+            memory: "250Mi"
+        livenessProbe: 
+          httpGet:
+            path: /
+            port: 3000
+            scheme: HTTP
+          failureThreshold: 1
+          period:Seconds: 10
+          timeoutSeconds: 10
+        startupProbe:
+          httpGet:
+            path: /
+            port: 3000
+            scheme: HTTP
+          failureThreshold: 30
+          periodSeconds: 10
+          timeoutSeconds: 10
+
+
+
+
